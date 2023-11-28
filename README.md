@@ -2,9 +2,14 @@
 
 ## Integrantes
 
+[Ismael Carvajal](https://github.com/ismaelc511)
+
+[Juan Ignacio Delena](https://github.com/JuanIgnacioDelena)
+
+[Marlon Yepes](https://github.com/myepes82)
+
 [Martha De la Ossa ](https://github.com/marthadelaossa)
          
-[Juan Ignacio Delena](https://github.com/JuanIgnacioDelena)
 
 
 ## Repositorio Proyecto
