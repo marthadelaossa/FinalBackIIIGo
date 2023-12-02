@@ -1,4 +1,4 @@
-package products
+package odontologo
 
 import (
 	"context"
@@ -24,65 +24,59 @@ func NewMySqlRepository(db *sql.DB) Repository {
 }
 
 // Create is a method that creates a new product.
-func (r *repositorymysql) Create(ctx context.Context, producto domain.Producto) (domain.Producto, error) {
+func (r *repositorymysql) Create(ctx context.Context, odontologo domain.Odontologo) (domain.Odontologo, error) {
 	statement, err := r.db.Prepare(QueryInsertProduct)
 	if err != nil {
-		return domain.Producto{}, ErrPrepareStatement
+		return domain.Odontologo{}, ErrPrepareStatement
 	}
 
 	defer statement.Close()
 
 	result, err := statement.Exec(
-		producto.Name,
-		producto.Quantity,
-		producto.CodeValue,
-		producto.IsPublished,
-		producto.Expiration,
-		producto.Price,
+		odontologo.Name,
+		odontologo.LastName,
+		odontologo.MedicalId,
 	)
 
 	if err != nil {
-		return domain.Producto{}, ErrExecStatement
+		return domain.Odontologo{}, ErrExecStatement
 	}
 
 	lastId, err := result.LastInsertId()
 	if err != nil {
-		return domain.Producto{}, ErrLastInsertedId
+		return domain.Odontologo{}, ErrLastInsertedId
 	}
 
-	producto.Id = int(lastId)
+	odontologo.Id = int(lastId)
 
-	return producto, nil
+	return odontologo, nil
 
 }
 
 // GetAll is a method that returns all products.
-func (r *repositorymysql) GetAll(ctx context.Context) ([]domain.Producto, error) {
+func (r *repositorymysql) GetAll(ctx context.Context) ([]domain.Odontologo, error) {
 	rows, err := r.db.Query(QueryGetAllProducts)
 	if err != nil {
-		return []domain.Producto{}, err
+		return []domain.Odontologo{}, err
 	}
 
 	defer rows.Close()
 
-	var productos []domain.Producto
+	var odontologos []domain.Odontologo
 
 	for rows.Next() {
-		var producto domain.Producto
+		var odontologo domain.Odontologo
 		err := rows.Scan(
-			&producto.Id,
-			&producto.Name,
-			&producto.Quantity,
-			&producto.CodeValue,
-			&producto.IsPublished,
-			&producto.Expiration,
-			&producto.Price,
+			&odontologo.Id,
+			&odontologo.Name,
+			&odontologo.LastName,
+			&odontologo.MedicalId,
 		)
 		if err != nil {
-			return []domain.Producto{}, err
+			return []domain.Odontologo{}, err
 		}
 
-		productos = append(productos, producto)
+		odontologos = append(odontologos, odontologo)
 	}
 
 	if err := rows.Err(); err != nil {
