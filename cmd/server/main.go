@@ -6,20 +6,19 @@ import (
 	"log"
 	"os"
 
-	routes "github.com/aldogayaladh/go-web-1598/cmd/server/router"
-	"github.com/aldogayaladh/go-web-1598/pkg/middleware"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
+	routes "github.com/marthadelaossa/FinalBackIIIGo/cmd/server/router"
+	"github.com/marthadelaossa/FinalBackIIIGo/pkg/middleware"
 
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 
-	_ "github.com/aldogayaladh/go-web-1598/docs"
 	_ "github.com/go-sql-driver/mysql"
 )
 
 const (
-	puerto = "8080"
+	puerto = "8081"
 )
 
 // @title           Swagger Example API
@@ -95,7 +94,7 @@ func connectDB() *sql.DB {
 	dbPassword = ""
 	dbHost = "localhost"
 	dbPort = "3306"
-	dbName = "my_db"
+	dbName = "clinicaodontologica"
 
 	// Create the data source.
 	dataSource := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?parseTime=true", dbUsername, dbPassword, dbHost, dbPort, dbName)

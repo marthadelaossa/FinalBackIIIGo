@@ -5,7 +5,7 @@ import (
 	"database/sql"
 	"errors"
 
-	"github.com/aldogayaladh/go-web-1598/internal/domain"
+	"github.com/marthadelaossa/FinalBackIIIGo/internal/domain"
 )
 
 var (
@@ -25,7 +25,7 @@ func NewMySqlRepository(db *sql.DB) Repository {
 
 // Create is a method that creates a new product.
 func (r *repositorymysql) Create(ctx context.Context, odontologo domain.Odontologo) (domain.Odontologo, error) {
-	statement, err := r.db.Prepare(QueryInsertProduct)
+	statement, err := r.db.Prepare(QueryInsertOdontologo)
 	if err != nil {
 		return domain.Odontologo{}, ErrPrepareStatement
 	}
@@ -55,7 +55,7 @@ func (r *repositorymysql) Create(ctx context.Context, odontologo domain.Odontolo
 
 // GetAll is a method that returns all products.
 func (r *repositorymysql) GetAll(ctx context.Context) ([]domain.Odontologo, error) {
-	rows, err := r.db.Query(QueryGetAllProducts)
+	rows, err := r.db.Query(QueryGetAllOdontologos)
 	if err != nil {
 		return []domain.Odontologo{}, err
 	}
@@ -80,74 +80,67 @@ func (r *repositorymysql) GetAll(ctx context.Context) ([]domain.Odontologo, erro
 	}
 
 	if err := rows.Err(); err != nil {
-		return []domain.Producto{}, err
+		return []domain.Odontologo{}, err
 	}
 
-	return productos, nil
+	return odontologos, nil
 }
 
 // GetByID is a method that returns a product by ID.
-func (r *repositorymysql) GetByID(ctx context.Context, id int) (domain.Producto, error) {
-	row := r.db.QueryRow(QueryGetProductById, id)
+func (r *repositorymysql) GetByID(ctx context.Context, id int) (domain.Odontologo, error) {
+	row := r.db.QueryRow(QueryGetOdontologoById, id)
 
-	var producto domain.Producto
+	var odontologo domain.Odontologo
 	err := row.Scan(
-		&producto.Id,
-		&producto.Name,
-		&producto.Quantity,
-		&producto.CodeValue,
-		&producto.IsPublished,
-		&producto.Expiration,
-		&producto.Price,
+		&odontologo.Id,
+		&odontologo.Name,
+		&odontologo.LastName,
+		&odontologo.MedicalId,
 	)
 
 	if err != nil {
-		return domain.Producto{}, err
+		return domain.Odontologo{}, err
 	}
 
-	return producto, nil
+	return odontologo, nil
 }
 
 // Update is a method that updates a product by ID.
 func (r *repositorymysql) Update(
 	ctx context.Context,
-	producto domain.Producto,
-	id int) (domain.Producto, error) {
-	statement, err := r.db.Prepare(QueryUpdateProduct)
+	odontologo domain.Odontologo,
+	id int) (domain.Odontologo, error) {
+	statement, err := r.db.Prepare(QueryUpdateOdontologo)
 	if err != nil {
-		return domain.Producto{}, err
+		return domain.Odontologo{}, err
 	}
 
 	defer statement.Close()
 
 	result, err := statement.Exec(
-		producto.Name,
-		producto.Quantity,
-		producto.CodeValue,
-		producto.IsPublished,
-		producto.Expiration,
-		producto.Price,
-		producto.Id,
+		odontologo.Name,
+		odontologo.LastName,
+		odontologo.MedicalId,
 	)
 
 	if err != nil {
-		return domain.Producto{}, err
+		return domain.Odontologo{}, err
 	}
 
 	_, err = result.RowsAffected()
 	if err != nil {
-		return domain.Producto{}, err
+		return domain.Odontologo{}, err
 	}
 
-	producto.Id = id
+	odontologo.Id = id
 
-	return producto, nil
+	return odontologo, nil
 
 }
 
 // Delete is a method that deletes a product by ID.
 func (r *repositorymysql) Delete(ctx context.Context, id int) error {
-	result, err := r.db.Exec(QueryDeleteProduct, id)
+	result, err := r.db.Exec(QueryDeleteOdontologo, id)
 	if err != nil {
 		return err
 	}
@@ -167,33 +160,29 @@ func (r *repositorymysql) Delete(ctx context.Context, id int) error {
 // Patch is a method that updates a product by ID.
 func (r *repositorymysql) Patch(
 	ctx context.Context,
-	producto domain.Producto,
-	id int) (domain.Producto, error) {
-	statement, err := r.db.Prepare(QueryUpdateProduct)
+	odontologo domain.Odontologo,
+	id int) (domain.Odontologo, error) {
+	statement, err := r.db.Prepare(QueryUpdateOdontologo)
 	if err != nil {
-		return domain.Producto{}, err
+		return domain.Odontologo{}, err
 	}
 
 	defer statement.Close()
 
 	result, err := statement.Exec(
-		producto.Name,
-		producto.Quantity,
-		producto.CodeValue,
-		producto.IsPublished,
-		producto.Expiration,
-		producto.Price,
-		producto.Id,
+		odontologo.Name,
+		odontologo.LastName,
+		odontologo.MedicalId,
 	)
 
 	if err != nil {
-		return domain.Producto{}, err
+		return domain.Odontologo{}, err
 	}
 
 	_, err = result.RowsAffected()
 	if err != nil {
-		return domain.Producto{}, err
+		return domain.Odontologo{}, err
 	}
 
-	return producto, nil
+	return odontologo, nil
 }

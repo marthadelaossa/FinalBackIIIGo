@@ -5,7 +5,7 @@ import (
 	"errors"
 	"log"
 
-	"github.com/aldogayaladh/go-web-1598/internal/domain"
+	"github.com/marthadelaossa/FinalBackIIIGo/internal/domain"
 )
 
 var (
@@ -118,7 +118,7 @@ func (r *repository) Patch(
 			if odontologo.LastName != "" {
 				r.db[key].LastName = odontologo.LastName
 			}
-			if odontologo.MedicalId > 0 {
+			if odontologo.MedicalId != "" {
 				r.db[key].MedicalId = odontologo.MedicalId
 			}
 			result = r.db[key]

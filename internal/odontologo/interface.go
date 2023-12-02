@@ -1,16 +1,16 @@
-package products
+package odontologo
 
 import (
 	"context"
 
-	"github.com/aldogayaladh/go-web-1598/internal/domain"
+	"github.com/marthadelaossa/FinalBackIIIGo/internal/domain"
 )
 
 type Repository interface {
-	Create(ctx context.Context, producto domain.Producto) (domain.Producto, error)
-	GetAll(ctx context.Context) ([]domain.Producto, error)
-	GetByID(ctx context.Context, id int) (domain.Producto, error)
-	Update(ctx context.Context, producto domain.Producto, id int) (domain.Producto, error)
+	Create(ctx context.Context, odontologo domain.Odontologo) (domain.Odontologo, error)
+	GetAll(ctx context.Context) ([]domain.Odontologo, error)
+	GetByID(ctx context.Context, id int) (domain.Odontologo, error)
+	Update(ctx context.Context, odontologo domain.Odontologo, id int) (domain.Odontologo, error)
 	Delete(ctx context.Context, id int) error
-	Patch(ctx context.Context, producto domain.Producto, id int) (domain.Producto, error)
+	Patch(ctx context.Context, odontologo domain.Odontologo, id int) (domain.Odontologo, error)
 }

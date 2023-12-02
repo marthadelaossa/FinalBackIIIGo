@@ -1,20 +1,20 @@
-package producto
+package odontologo
 
 import (
 	"net/http"
 	"strconv"
 
-	"github.com/aldogayaladh/go-web-1598/internal/domain"
-	"github.com/aldogayaladh/go-web-1598/internal/products"
-	"github.com/aldogayaladh/go-web-1598/pkg/web"
 	"github.com/gin-gonic/gin"
+	"github.com/marthadelaossa/FinalBackIIIGo/internal/domain"
+	"github.com/marthadelaossa/FinalBackIIIGo/internal/odontologo"
+	"github.com/marthadelaossa/FinalBackIIIGo/pkg/web"
 )
 
 type Controlador struct {
-	service products.Service
+	service odontologo.Service
 }
 
-func NewControladorProducto(service products.Service) *Controlador {
+func NewControladorProducto(service odontologo.Service) *Controlador {
 	return &Controlador{
 		service: service,
 	}
@@ -33,7 +33,7 @@ func NewControladorProducto(service products.Service) *Controlador {
 func (c *Controlador) HandlerCreate() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 
-		var request domain.Producto
+		var request domain.Odontologo
 
 		err := ctx.Bind(&request)
 
@@ -42,13 +42,13 @@ func (c *Controlador) HandlerCreate() gin.HandlerFunc {
 			return
 		}
 
-		product, err := c.service.Create(ctx, request)
+		odontologo, err := c.service.Create(ctx, request)
 		if err != nil {
 			web.Error(ctx, http.StatusInternalServerError, "%s", "internal server error")
 			return
 		}
 
-		web.Success(ctx, http.StatusOK, product)
+		web.Success(ctx, http.StatusOK, odontologo)
 
 	}
 }
@@ -64,14 +64,14 @@ func (c *Controlador) HandlerCreate() gin.HandlerFunc {
 // @Router /productos [get]
 func (c *Controlador) HandlerGetAll() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		productos, err := c.service.GetAll(ctx)
+		odontologo, err := c.service.GetAll(ctx)
 
 		if err != nil {
 			web.Error(ctx, http.StatusInternalServerError, "%s", "internal server error")
 			return
 		}
 
-		web.Success(ctx, http.StatusOK, productos)
+		web.Success(ctx, http.StatusOK, odontologo)
 	}
 }
 
@@ -94,13 +94,13 @@ func (c *Controlador) HandlerGetByID() gin.HandlerFunc {
 			return
 		}
 
-		product, err := c.service.GetByID(ctx, id)
+		odontologo, err := c.service.GetByID(ctx, id)
 		if err != nil {
 			web.Error(ctx, http.StatusInternalServerError, "%s", "internal server error")
 			return
 		}
 
-		web.Success(ctx, http.StatusOK, product)
+		web.Success(ctx, http.StatusOK, odontologo)
 	}
 }
 
@@ -117,7 +117,7 @@ func (c *Controlador) HandlerGetByID() gin.HandlerFunc {
 func (c *Controlador) HandlerUpdate() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 
-		var request domain.Producto
+		var request domain.Odontologo
 
 		errBind := ctx.Bind(&request)
 
@@ -135,13 +135,13 @@ func (c *Controlador) HandlerUpdate() gin.HandlerFunc {
 			return
 		}
 
-		product, err := c.service.Update(ctx, request, idInt)
+		odontologo, err := c.service.Update(ctx, request, idInt)
 		if err != nil {
 			web.Error(ctx, http.StatusInternalServerError, "%s", "internal server error")
 			return
 		}
 
-		web.Success(ctx, http.StatusOK, product)
+		web.Success(ctx, http.StatusOK, odontologo)
 
 	}
 }
@@ -171,7 +171,7 @@ func (c *Controlador) HandlerDelete() gin.HandlerFunc {
 			return
 		}
 
-		web.Success(ctx, http.StatusOK, "producto eliminado")
+		web.Success(ctx, http.StatusOK, "odontologo eliminado")
 	}
 }
 
@@ -194,7 +194,7 @@ func (c *Controlador) HandlerPatch() gin.HandlerFunc {
 			return
 		}
 
-		var request domain.Producto
+		var request domain.Odontologo
 
 		errBind := ctx.Bind(&request)
 
@@ -203,12 +203,12 @@ func (c *Controlador) HandlerPatch() gin.HandlerFunc {
 			return
 		}
 
-		product, err := c.service.Patch(ctx, request, id)
+		odontologo, err := c.service.Patch(ctx, request, id)
 		if err != nil {
 			web.Error(ctx, http.StatusInternalServerError, "%s", "internal server error")
 			return
 		}
 
-		web.Success(ctx, http.StatusOK, product)
+		web.Success(ctx, http.StatusOK, odontologo)
 	}
 }
