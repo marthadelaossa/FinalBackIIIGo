@@ -1,33 +1,48 @@
-version: "3.8"
+version: "3.7"
+
 services:
-  db:
-    image: mysql
+  database:
+    image: mysql-backend
+    platform: linux/x86_64
+    build:
+      context: .
+      dockerfile: Dockerfile.db
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: local
+      MYSQL_PASSWORD: localpassword
       MYSQL_DATABASE: clinicaodontologica
-      MYSQL_USER: root
-      MYSQL_PASSWORD: ""
-      MYSQL_ALLOW_EMPTY_PASSWORD: yes
+    ports:
+      - "3305:3306"
     networks:
       - backend
+    volumes:
+      - db-data:/var/lib/mysql
 
   backend:
     image: backend-go
+    restart: always
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.api
+    ports:
+      - 8081:8081
     environment:
-      PORT: 8080
-      DB_PASSWORD: ""
-      DB_USER: root
+      PORT: 8081
+      IDENTITY_TOKEN: test_token
+      GO_ENV: "PRODUCTION"
+      DB_PASSWORD: localpassword
+      DB_USER: local
       DB_NAME: clinicaodontologica
       DB_PORT: 3306
-      DB_HOST: db
+      DB_HOST: database
     networks:
       - backend
     depends_on:
-      - db
+      - database
 
 networks:
   backend:
+volumes:
+  db-data:

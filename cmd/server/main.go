@@ -46,10 +46,13 @@ func main() {
 		}
 	}()
 
-	// Load the environment variables.
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal(err)
+	// Load the environment variables.\
+	goEnv := os.Getenv("GO_ENV")
+	if goEnv != "PRODUCTION" {
+		err := godotenv.Load()
+		if err != nil {
+			log.Fatal(err)
+		}
 	}
 
 	// Connect to the database.

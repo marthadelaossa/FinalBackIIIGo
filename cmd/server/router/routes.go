@@ -48,7 +48,7 @@ func (r *router) buildProductRoutes() {
 	// Create a new product controller.
 	repository := odontologo.NewMySqlRepository(r.db)
 	service := odontologo.NewServiceOdontologo(repository)
-	controlador := handlerOdontologo.NewControladorProducto(service)
+	controlador := handlerOdontologo.NewController(service)
 
 	grupoOdontologo := r.routerGroup.Group("/odontologo")
 	{
