@@ -1,0 +1,33 @@
+version: "3.8"
+services:
+  db:
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: clinicaodontologica
+      MYSQL_USER: root
+      MYSQL_PASSWORD: ""
+      MYSQL_ALLOW_EMPTY_PASSWORD: yes
+    networks:
+      - backend
+
+  backend:
+    image: backend-go
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      PORT: 8080
+      DB_PASSWORD: ""
+      DB_USER: root
+      DB_NAME: clinicaodontologica
+      DB_PORT: 3306
+      DB_HOST: db
+    networks:
+      - backend
+    depends_on:
+      - db
+
+networks:
+  backend:

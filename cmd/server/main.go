@@ -17,10 +17,6 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-const (
-	puerto = "8081"
-)
-
 // @title           Swagger Example API
 // @version         1.0
 // @description     This is a sample server celler server.
@@ -57,7 +53,10 @@ func main() {
 	}
 
 	// Connect to the database.
-	db := connectDB()
+	db, err := connectDB()
+	if err != nil {
+		panic(err)
+	}
 
 	// Create a new Gin engine.
 	router := gin.New()
@@ -77,41 +76,44 @@ func main() {
 }
 
 func runApp(db *sql.DB, engine *gin.Engine) {
-	// Run the application.
 	router := routes.NewRouter(engine, db)
-	// Map all routes.
+
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+
 	router.MapRoutes()
-	if err := engine.Run(fmt.Sprintf(":%s", puerto)); err != nil {
+	if err := engine.Run(fmt.Sprintf(":%s", port)); err != nil {
 		panic(err)
 	}
 
 }
 
 // connectDB connects to the database.
-func connectDB() *sql.DB {
-	var dbUsername, dbPassword, dbHost, dbPort, dbName string
-	dbUsername = "root"
-	dbPassword = ""
-	dbHost = "localhost"
-	dbPort = "3306"
-	dbName = "clinicaodontologica"
+func connectDB() (*sql.DB, error) {
+	// Get values from environment variables
+	dbUsername := os.Getenv("DB_USER")
+	dbPassword := os.Getenv("DB_PASSWORD")
+	dbHost := os.Getenv("DB_HOST")
+	dbPort := os.Getenv("DB_PORT")
+	dbName := os.Getenv("DB_NAME")
 
-	// Create the data source.
+	if dbUsername == "" || dbPassword == "" || dbHost == "" || dbPort == "" || dbName == "" {
+		return nil, fmt.Errorf("all environment variables must be defined for the database connection")
+	}
+
 	dataSource := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?parseTime=true", dbUsername, dbPassword, dbHost, dbPort, dbName)
 
-	// Open the connection.
 	db, err := sql.Open("mysql", dataSource)
-
 	if err != nil {
-		panic(err)
+		return nil, fmt.Errorf("error opening the database connection: %v", err)
 	}
 
-	// Check the connection.
 	err = db.Ping()
-
 	if err != nil {
-		panic(err)
+		return nil, fmt.Errorf("error verifying the database connection: %v", err)
 	}
 
-	return db
+	return db, nil
 }
