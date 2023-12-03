@@ -91,7 +91,7 @@ func runApp(db *sql.DB, engine *gin.Engine) {
 func connectDB() *sql.DB {
 	var dbUsername, dbPassword, dbHost, dbPort, dbName string
 	dbUsername = "root"
-	dbPassword = "Delena507165_"
+	dbPassword = ""
 	dbHost = "localhost"
 	dbPort = "3306"
 	dbName = "clinicaodontologica"
