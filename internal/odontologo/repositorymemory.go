@@ -22,13 +22,13 @@ func NewMemoryRepository(db []domain.Odontologo) Repository {
 	return &repository{db: db}
 }
 
-// Create is a method that creates a new product.
+// Create is a method that creates a new odontologo.
 func (r *repository) Create(ctx context.Context, odontologo domain.Odontologo) (domain.Odontologo, error) {
 	r.db = append(r.db, odontologo)
 	return odontologo, nil
 }
 
-// GetAll is a method that returns all products.
+// GetAll is a method that returns all odontologos.
 func (r *repository) GetAll(ctx context.Context) ([]domain.Odontologo, error) {
 
 	contenidoContext := ctx.Value("rol")
@@ -44,7 +44,7 @@ func (r *repository) GetAll(ctx context.Context) ([]domain.Odontologo, error) {
 	return r.db, nil
 }
 
-// GetByID is a method that returns a product by ID.
+// GetByID is a method that returns an odontologo by ID.
 func (r *repository) GetByID(ctx context.Context, id int) (domain.Odontologo, error) {
 	var result domain.Odontologo
 	for _, value := range r.db {
@@ -61,7 +61,7 @@ func (r *repository) GetByID(ctx context.Context, id int) (domain.Odontologo, er
 	return result, nil
 }
 
-// Update is a method that updates a product by ID.
+// Update is a method that updates an odontologo by ID.
 func (r *repository) Update(
 	ctx context.Context,
 	odontologo domain.Odontologo,
@@ -85,7 +85,7 @@ func (r *repository) Update(
 
 }
 
-// Delete is a method that deletes a product by ID.
+// Delete is a method that deletes an odontologo by ID.
 func (r *repository) Delete(ctx context.Context, id int) error {
 	var result domain.Odontologo
 	for key, value := range r.db {
@@ -103,7 +103,7 @@ func (r *repository) Delete(ctx context.Context, id int) error {
 	return nil
 }
 
-// Patch is a method that updates a product by ID.
+// Patch is a method that updates an odontologo by ID.
 func (r *repository) Patch(
 	ctx context.Context,
 	odontologo domain.Odontologo,
