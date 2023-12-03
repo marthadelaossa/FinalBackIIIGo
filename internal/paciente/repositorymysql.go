@@ -23,7 +23,7 @@ func NewMySqlRepository(db *sql.DB) Repository {
 	return &repositorymysql{db: db}
 }
 
-// Create is a method that creates a new paciente.
+// Create is a method that creates a paciente.
 func (r *repositorymysql) Create(ctx context.Context, paciente domain.Paciente) (domain.Paciente, error) {
 	statement, err := r.db.Prepare(QueryInsertPaciente)
 	if err != nil {
@@ -35,9 +35,8 @@ func (r *repositorymysql) Create(ctx context.Context, paciente domain.Paciente) 
 	result, err := statement.Exec(
 		paciente.Name,
 		paciente.LastName,
-		paciente.DNI,
 		paciente.Address,
-		paciente.CreationDate,
+		paciente.DNI,
 	)
 
 	if err != nil {
@@ -55,16 +54,16 @@ func (r *repositorymysql) Create(ctx context.Context, paciente domain.Paciente) 
 
 }
 
-// GetAll is a method that returns all products.
+// GetAll is a method that returns all pacientes.
 func (r *repositorymysql) GetAll(ctx context.Context) ([]domain.Paciente, error) {
-	rows, err := r.db.Query(QueryGetAllPacientes)
+	rows, err := r.db.Query(QueryGetAllPaciente)
 	if err != nil {
 		return []domain.Paciente{}, err
 	}
 
 	defer rows.Close()
 
-	var odontologos []domain.Paciente
+	var pacientes []domain.Paciente
 
 	for rows.Next() {
 		var paciente domain.Paciente
@@ -72,22 +71,22 @@ func (r *repositorymysql) GetAll(ctx context.Context) ([]domain.Paciente, error)
 			&paciente.Id,
 			&paciente.Name,
 			&paciente.LastName,
-			&paciente.DNI,
 			&paciente.Address,
+			&paciente.DNI,
 			&paciente.CreationDate,
 		)
 		if err != nil {
 			return []domain.Paciente{}, err
 		}
 
-		odontologos = append(odontologos, paciente)
+		pacientes = append(pacientes, paciente)
 	}
 
 	if err := rows.Err(); err != nil {
 		return []domain.Paciente{}, err
 	}
 
-	return odontologos, nil
+	return pacientes, nil
 }
 
 // GetByID is a method that returns a paciente by ID.
@@ -99,8 +98,8 @@ func (r *repositorymysql) GetByID(ctx context.Context, id int) (domain.Paciente,
 		&paciente.Id,
 		&paciente.Name,
 		&paciente.LastName,
-		&paciente.DNI,
 		&paciente.Address,
+		&paciente.DNI,
 		&paciente.CreationDate,
 	)
 
@@ -126,9 +125,9 @@ func (r *repositorymysql) Update(
 	result, err := statement.Exec(
 		paciente.Name,
 		paciente.LastName,
-		paciente.DNI,
 		paciente.Address,
-		paciente.CreationDate,
+		paciente.DNI,
+		id,
 	)
 
 	if err != nil {
@@ -180,9 +179,9 @@ func (r *repositorymysql) Patch(
 	result, err := statement.Exec(
 		paciente.Name,
 		paciente.LastName,
-		paciente.DNI,
 		paciente.Address,
-		paciente.CreationDate,
+		paciente.DNI,
+		id,
 	)
 
 	if err != nil {

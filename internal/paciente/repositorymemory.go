@@ -28,7 +28,7 @@ func (r *repository) Create(ctx context.Context, paciente domain.Paciente) (doma
 	return paciente, nil
 }
 
-// GetAll is a method that returns all products.
+// GetAll is a method that returns all pacientes.
 func (r *repository) GetAll(ctx context.Context) ([]domain.Paciente, error) {
 
 	contenidoContext := ctx.Value("rol")
@@ -118,14 +118,11 @@ func (r *repository) Patch(
 			if paciente.LastName != "" {
 				r.db[key].LastName = paciente.LastName
 			}
-			if paciente.DNI != "" {
-				r.db[key].DNI = paciente.DNI
-			}
 			if paciente.Address != "" {
 				r.db[key].Address = paciente.Address
 			}
-			if paciente.CreationDate != "" {
-				r.db[key].CreationDate = paciente.CreationDate
+			if paciente.DNI != "" {
+				r.db[key].DNI = paciente.DNI
 			}
 			result = r.db[key]
 			break

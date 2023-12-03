@@ -11,16 +11,16 @@ type Service interface {
 	Create(ctx context.Context, paciente domain.Paciente) (domain.Paciente, error)
 	GetAll(ctx context.Context) ([]domain.Paciente, error)
 	GetByID(ctx context.Context, id int) (domain.Paciente, error)
-	Update(ctx context.Context, producto domain.Paciente, id int) (domain.Paciente, error)
+	Update(ctx context.Context, paciente domain.Paciente, id int) (domain.Paciente, error)
 	Delete(ctx context.Context, id int) error
-	Patch(ctx context.Context, producto domain.Paciente, id int) (domain.Paciente, error)
+	Patch(ctx context.Context, paciente domain.Paciente, id int) (domain.Paciente, error)
 }
 
 type service struct {
 	repository Repository
 }
 
-func NewServiceOdontologo(repository Repository) Service {
+func NewServicePaciente(repository Repository) Service {
 	return &service{repository: repository}
 }
 
@@ -35,11 +35,11 @@ func (s *service) Create(ctx context.Context, paciente domain.Paciente) (domain.
 	return paciente, nil
 }
 
-// GetAll is a method that returns all products.
+// GetAll is a method that returns all pacientes.
 func (s *service) GetAll(ctx context.Context) ([]domain.Paciente, error) {
 	listProducts, err := s.repository.GetAll(ctx)
 	if err != nil {
-		log.Println("[PacientesService][GetAll] error getting all odontologos", err)
+		log.Println("[PacientesService][GetAll] error getting all pacientes", err)
 		return []domain.Paciente{}, err
 	}
 
@@ -89,13 +89,13 @@ func (s *service) Patch(ctx context.Context, paciente domain.Paciente, id int) (
 
 	pacientePatch, err := s.validatePatch(pacienteStore, paciente)
 	if err != nil {
-		log.Println("[ProductsService][Patch] error validating paciente", err)
+		log.Println("[PacientesService][Patch] error validating paciente", err)
 		return domain.Paciente{}, err
 	}
 
 	paciente, err = s.repository.Patch(ctx, pacientePatch, id)
 	if err != nil {
-		log.Println("[ProductsService][Patch] error patching paciente by ID", err)
+		log.Println("[PacientesService][Patch] error patching paciente by ID", err)
 		return domain.Paciente{}, err
 	}
 
@@ -113,17 +113,18 @@ func (s *service) validatePatch(pacienteStore, paciente domain.Paciente) (domain
 		pacienteStore.LastName = paciente.LastName
 	}
 
-	if paciente.DNI != "" {
-		pacienteStore.DNI = paciente.DNI
-	}
-
 	if paciente.Address != "" {
 		pacienteStore.Address = paciente.Address
+	}
+
+	if paciente.DNI != "" {
+		pacienteStore.DNI = paciente.DNI
 	}
 
 	if paciente.CreationDate != "" {
 		pacienteStore.CreationDate = paciente.CreationDate
 	}
+
 	return pacienteStore, nil
 
 }
