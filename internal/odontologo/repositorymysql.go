@@ -23,7 +23,7 @@ func NewMySqlRepository(db *sql.DB) Repository {
 	return &repositorymysql{db: db}
 }
 
-// Create is a method that creates a new product.
+// Create is a method that creates a new odonotologo.
 func (r *repositorymysql) Create(ctx context.Context, odontologo domain.Odontologo) (domain.Odontologo, error) {
 	statement, err := r.db.Prepare(QueryInsertOdontologo)
 	if err != nil {
@@ -53,7 +53,7 @@ func (r *repositorymysql) Create(ctx context.Context, odontologo domain.Odontolo
 
 }
 
-// GetAll is a method that returns all products.
+// GetAll is a method that returns all odontologos.
 func (r *repositorymysql) GetAll(ctx context.Context) ([]domain.Odontologo, error) {
 	rows, err := r.db.Query(QueryGetAllOdontologos)
 	if err != nil {
@@ -86,7 +86,7 @@ func (r *repositorymysql) GetAll(ctx context.Context) ([]domain.Odontologo, erro
 	return odontologos, nil
 }
 
-// GetByID is a method that returns a product by ID.
+// GetByID is a method that returns a odontologo by ID.
 func (r *repositorymysql) GetByID(ctx context.Context, id int) (domain.Odontologo, error) {
 	row := r.db.QueryRow(QueryGetOdontologoById, id)
 
@@ -105,7 +105,7 @@ func (r *repositorymysql) GetByID(ctx context.Context, id int) (domain.Odontolog
 	return odontologo, nil
 }
 
-// Update is a method that updates a product by ID.
+// Update is a method that updates an odontologo by ID.
 func (r *repositorymysql) Update(
 	ctx context.Context,
 	odontologo domain.Odontologo,
@@ -139,7 +139,7 @@ func (r *repositorymysql) Update(
 
 }
 
-// Delete is a method that deletes a product by ID.
+// Delete is a method that deletes a odontologo by ID.
 func (r *repositorymysql) Delete(ctx context.Context, id int) error {
 	result, err := r.db.Exec(QueryDeleteOdontologo, id)
 	if err != nil {
@@ -158,7 +158,7 @@ func (r *repositorymysql) Delete(ctx context.Context, id int) error {
 	return nil
 }
 
-// Patch is a method that updates a product by ID.
+// Patch is a method that updates a odontologo by ID.
 func (r *repositorymysql) Patch(
 	ctx context.Context,
 	odontologo domain.Odontologo,
