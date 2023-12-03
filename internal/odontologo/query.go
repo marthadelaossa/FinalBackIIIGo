@@ -10,4 +10,6 @@ var (
 	FROM clinicaodontologica.odontologo WHERE id = ?`
 	QueryUpdateOdontologo = `UPDATE clinicaodontologica.odontologo SET name = ?, last_name = ?, medical_ID = ?
 	WHERE id = ?`
+	QueryPatchOdontologo = `UPDATE clinicaodontologica.odontologo SET name = COALESCE(?, name), last_name = COALESCE(?, last_name), medical_ID = COALESCE(?, medical_ID)
+	WHERE id = ?`
 )
