@@ -3,10 +3,9 @@ package producto
 import (
 	"net/http"
 
-	"github.com/aldogayaladh/go-web-1598/internal/domain"
-	seller "github.com/aldogayaladh/go-web-1598/internal/seller"
-	"github.com/aldogayaladh/go-web-1598/pkg/web"
 	"github.com/gin-gonic/gin"
+	"github.com/marthadelaossa/FinalBackIIIGo/internal/seller"
+	"github.com/marthadelaossa/FinalBackIIIGo/pkg/web"
 )
 
 type Controlador struct {
