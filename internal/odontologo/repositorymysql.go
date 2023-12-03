@@ -121,6 +121,7 @@ func (r *repositorymysql) Update(
 		odontologo.Name,
 		odontologo.LastName,
 		odontologo.MedicalId,
+		id,
 	)
 
 	if err != nil {
@@ -173,6 +174,7 @@ func (r *repositorymysql) Patch(
 		odontologo.Name,
 		odontologo.LastName,
 		odontologo.MedicalId,
+		id,
 	)
 
 	if err != nil {
