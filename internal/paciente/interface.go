@@ -1,4 +1,4 @@
-package odontologo
+package paciente
 
 import (
 	"context"
@@ -7,10 +7,10 @@ import (
 )
 
 type Repository interface {
-	Create(ctx context.Context, odontologo domain.Odontologo) (domain.Odontologo, error)
-	GetAll(ctx context.Context) ([]domain.Odontologo, error)
-	GetByID(ctx context.Context, id int) (domain.Odontologo, error)
-	Update(ctx context.Context, odontologo domain.Odontologo, id int) (domain.Odontologo, error)
+	Create(ctx context.Context, paciente domain.Paciente) (domain.Paciente, error)
+	GetAll(ctx context.Context) ([]domain.Paciente, error)
+	GetByID(ctx context.Context, id int) (domain.Paciente, error)
+	Update(ctx context.Context, paciente domain.Paciente, id int) (domain.Paciente, error)
 	Delete(ctx context.Context, id int) error
-	Patch(ctx context.Context, odontologo domain.Odontologo, id int) (domain.Odontologo, error)
+	Patch(ctx context.Context, paciente domain.Paciente, id int) (domain.Paciente, error)
 }

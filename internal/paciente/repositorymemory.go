@@ -1,4 +1,4 @@
-package odontologo
+package paciente
 
 import (
 	"context"
@@ -10,26 +10,26 @@ import (
 
 var (
 	ErrEmpty    = errors.New("empty list")
-	ErrNotFound = errors.New("product not found")
+	ErrNotFound = errors.New("paciente not found")
 )
 
 type repository struct {
-	db []domain.Odontologo
+	db []domain.Paciente
 }
 
 // NewMemoryRepository ....
-func NewMemoryRepository(db []domain.Odontologo) Repository {
+func NewMemoryRepository(db []domain.Paciente) Repository {
 	return &repository{db: db}
 }
 
-// Create is a method that creates a new product.
-func (r *repository) Create(ctx context.Context, odontologo domain.Odontologo) (domain.Odontologo, error) {
-	r.db = append(r.db, odontologo)
-	return odontologo, nil
+// Create is a method that creates a new paciente.
+func (r *repository) Create(ctx context.Context, paciente domain.Paciente) (domain.Paciente, error) {
+	r.db = append(r.db, paciente)
+	return paciente, nil
 }
 
 // GetAll is a method that returns all products.
-func (r *repository) GetAll(ctx context.Context) ([]domain.Odontologo, error) {
+func (r *repository) GetAll(ctx context.Context) ([]domain.Paciente, error) {
 
 	contenidoContext := ctx.Value("rol")
 
@@ -38,15 +38,15 @@ func (r *repository) GetAll(ctx context.Context) ([]domain.Odontologo, error) {
 	}
 
 	if len(r.db) < 1 {
-		return []domain.Odontologo{}, ErrEmpty
+		return []domain.Paciente{}, ErrEmpty
 	}
 
 	return r.db, nil
 }
 
-// GetByID is a method that returns a product by ID.
-func (r *repository) GetByID(ctx context.Context, id int) (domain.Odontologo, error) {
-	var result domain.Odontologo
+// GetByID is a method that returns a paciente by ID.
+func (r *repository) GetByID(ctx context.Context, id int) (domain.Paciente, error) {
+	var result domain.Paciente
 	for _, value := range r.db {
 		if value.Id == id {
 			result = value
@@ -55,39 +55,39 @@ func (r *repository) GetByID(ctx context.Context, id int) (domain.Odontologo, er
 	}
 
 	if result.Id < 1 {
-		return domain.Odontologo{}, ErrNotFound
+		return domain.Paciente{}, ErrNotFound
 	}
 
 	return result, nil
 }
 
-// Update is a method that updates a product by ID.
+// Update is a method that updates a paciente by ID.
 func (r *repository) Update(
 	ctx context.Context,
-	odontologo domain.Odontologo,
-	id int) (domain.Odontologo, error) {
+	paciente domain.Paciente,
+	id int) (domain.Paciente, error) {
 
-	var result domain.Odontologo
+	var result domain.Paciente
 	for key, value := range r.db {
 		if value.Id == id {
-			odontologo.Id = id
-			r.db[key] = odontologo
+			paciente.Id = id
+			r.db[key] = paciente
 			result = r.db[key]
 			break
 		}
 	}
 
 	if result.Id < 1 {
-		return domain.Odontologo{}, ErrNotFound
+		return domain.Paciente{}, ErrNotFound
 	}
 
 	return result, nil
 
 }
 
-// Delete is a method that deletes a product by ID.
+// Delete is a method that deletes a paciente by ID.
 func (r *repository) Delete(ctx context.Context, id int) error {
-	var result domain.Odontologo
+	var result domain.Paciente
 	for key, value := range r.db {
 		if value.Id == id {
 			result = r.db[key]
@@ -103,23 +103,29 @@ func (r *repository) Delete(ctx context.Context, id int) error {
 	return nil
 }
 
-// Patch is a method that updates a product by ID.
+// Patch is a method that updates a paciente by ID.
 func (r *repository) Patch(
 	ctx context.Context,
-	odontologo domain.Odontologo,
-	id int) (domain.Odontologo, error) {
+	paciente domain.Paciente,
+	id int) (domain.Paciente, error) {
 
-	var result domain.Odontologo
+	var result domain.Paciente
 	for key, value := range r.db {
 		if value.Id == id {
-			if odontologo.Name != "" {
-				r.db[key].Name = odontologo.Name
+			if paciente.Name != "" {
+				r.db[key].Name = paciente.Name
 			}
-			if odontologo.LastName != "" {
-				r.db[key].LastName = odontologo.LastName
+			if paciente.LastName != "" {
+				r.db[key].LastName = paciente.LastName
 			}
-			if odontologo.MedicalId != "" {
-				r.db[key].MedicalId = odontologo.MedicalId
+			if paciente.DNI != "" {
+				r.db[key].DNI = paciente.DNI
+			}
+			if paciente.Address != "" {
+				r.db[key].Address = paciente.Address
+			}
+			if paciente.CreationDate != "" {
+				r.db[key].CreationDate = paciente.CreationDate
 			}
 			result = r.db[key]
 			break
@@ -127,7 +133,7 @@ func (r *repository) Patch(
 	}
 
 	if result.Id < 1 {
-		return domain.Odontologo{}, ErrNotFound
+		return domain.Paciente{}, ErrNotFound
 	}
 
 	return result, nil

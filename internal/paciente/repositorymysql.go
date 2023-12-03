@@ -1,4 +1,4 @@
-package odontologo
+package paciente
 
 import (
 	"context"
@@ -23,125 +23,132 @@ func NewMySqlRepository(db *sql.DB) Repository {
 	return &repositorymysql{db: db}
 }
 
-// Create is a method that creates a new product.
-func (r *repositorymysql) Create(ctx context.Context, odontologo domain.Odontologo) (domain.Odontologo, error) {
-	statement, err := r.db.Prepare(QueryInsertOdontologo)
+// Create is a method that creates a new paciente.
+func (r *repositorymysql) Create(ctx context.Context, paciente domain.Paciente) (domain.Paciente, error) {
+	statement, err := r.db.Prepare(QueryInsertPaciente)
 	if err != nil {
-		return domain.Odontologo{}, ErrPrepareStatement
+		return domain.Paciente{}, ErrPrepareStatement
 	}
 
 	defer statement.Close()
 
 	result, err := statement.Exec(
-		odontologo.Name,
-		odontologo.LastName,
-		odontologo.MedicalId,
+		paciente.Name,
+		paciente.LastName,
+		paciente.DNI,
+		paciente.Address,
+		paciente.CreationDate,
 	)
 
 	if err != nil {
-		return domain.Odontologo{}, ErrExecStatement
+		return domain.Paciente{}, ErrExecStatement
 	}
 
 	lastId, err := result.LastInsertId()
 	if err != nil {
-		return domain.Odontologo{}, ErrLastInsertedId
+		return domain.Paciente{}, ErrLastInsertedId
 	}
 
-	odontologo.Id = int(lastId)
+	paciente.Id = int(lastId)
 
-	return odontologo, nil
+	return paciente, nil
 
 }
 
 // GetAll is a method that returns all products.
-func (r *repositorymysql) GetAll(ctx context.Context) ([]domain.Odontologo, error) {
-	rows, err := r.db.Query(QueryGetAllOdontologos)
+func (r *repositorymysql) GetAll(ctx context.Context) ([]domain.Paciente, error) {
+	rows, err := r.db.Query(QueryGetAllPacientes)
 	if err != nil {
-		return []domain.Odontologo{}, err
+		return []domain.Paciente{}, err
 	}
 
 	defer rows.Close()
 
-	var odontologos []domain.Odontologo
+	var odontologos []domain.Paciente
 
 	for rows.Next() {
-		var odontologo domain.Odontologo
+		var paciente domain.Paciente
 		err := rows.Scan(
-			&odontologo.Id,
-			&odontologo.Name,
-			&odontologo.LastName,
-			&odontologo.MedicalId,
+			&paciente.Id,
+			&paciente.Name,
+			&paciente.LastName,
+			&paciente.DNI,
+			&paciente.Address,
+			&paciente.CreationDate,
 		)
 		if err != nil {
-			return []domain.Odontologo{}, err
+			return []domain.Paciente{}, err
 		}
 
-		odontologos = append(odontologos, odontologo)
+		odontologos = append(odontologos, paciente)
 	}
 
 	if err := rows.Err(); err != nil {
-		return []domain.Odontologo{}, err
+		return []domain.Paciente{}, err
 	}
 
 	return odontologos, nil
 }
 
-// GetByID is a method that returns a product by ID.
-func (r *repositorymysql) GetByID(ctx context.Context, id int) (domain.Odontologo, error) {
-	row := r.db.QueryRow(QueryGetOdontologoById, id)
+// GetByID is a method that returns a paciente by ID.
+func (r *repositorymysql) GetByID(ctx context.Context, id int) (domain.Paciente, error) {
+	row := r.db.QueryRow(QueryGetPacienteById, id)
 
-	var odontologo domain.Odontologo
+	var paciente domain.Paciente
 	err := row.Scan(
-		&odontologo.Id,
-		&odontologo.Name,
-		&odontologo.LastName,
-		&odontologo.MedicalId,
+		&paciente.Id,
+		&paciente.Name,
+		&paciente.LastName,
+		&paciente.DNI,
+		&paciente.Address,
+		&paciente.CreationDate,
 	)
 
 	if err != nil {
-		return domain.Odontologo{}, err
+		return domain.Paciente{}, err
 	}
 
-	return odontologo, nil
+	return paciente, nil
 }
 
-// Update is a method that updates a product by ID.
+// Update is a method that updates a paciente by ID.
 func (r *repositorymysql) Update(
 	ctx context.Context,
-	odontologo domain.Odontologo,
-	id int) (domain.Odontologo, error) {
-	statement, err := r.db.Prepare(QueryUpdateOdontologo)
+	paciente domain.Paciente,
+	id int) (domain.Paciente, error) {
+	statement, err := r.db.Prepare(QueryUpdatePaciente)
 	if err != nil {
-		return domain.Odontologo{}, err
+		return domain.Paciente{}, err
 	}
 
 	defer statement.Close()
 
 	result, err := statement.Exec(
-		odontologo.Name,
-		odontologo.LastName,
-		odontologo.MedicalId,
-		id,
+		paciente.Name,
+		paciente.LastName,
+		paciente.DNI,
+		paciente.Address,
+		paciente.CreationDate,
 	)
 
 	if err != nil {
-		return domain.Odontologo{}, err
+		return domain.Paciente{}, err
 	}
 
 	_, err = result.RowsAffected()
 	if err != nil {
-		return domain.Odontologo{}, err
+		return domain.Paciente{}, err
 	}
 
-	odontologo.Id = id
+	paciente.Id = id
 
-	return odontologo, nil
+	return paciente, nil
 
 }
 
-// Delete is a method that deletes a product by ID.
+// Delete is a method that deletes a paciente by ID.
 func (r *repositorymysql) Delete(ctx context.Context, id int) error {
-	result, err := r.db.Exec(QueryDeleteOdontologo, id)
+	result, err := r.db.Exec(QueryDeletePaciente, id)
 	if err != nil {
 		return err
 	}
@@ -158,33 +165,34 @@ func (r *repositorymysql) Delete(ctx context.Context, id int) error {
 	return nil
 }
 
-// Patch is a method that updates a product by ID.
+// Patch is a method that updates a paciente by ID.
 func (r *repositorymysql) Patch(
 	ctx context.Context,
-	odontologo domain.Odontologo,
-	id int) (domain.Odontologo, error) {
-	statement, err := r.db.Prepare(QueryUpdateOdontologo)
+	paciente domain.Paciente,
+	id int) (domain.Paciente, error) {
+	statement, err := r.db.Prepare(QueryUpdatePaciente)
 	if err != nil {
-		return domain.Odontologo{}, err
+		return domain.Paciente{}, err
 	}
 
 	defer statement.Close()
 
 	result, err := statement.Exec(
-		odontologo.Name,
-		odontologo.LastName,
-		odontologo.MedicalId,
-		id,
+		paciente.Name,
+		paciente.LastName,
+		paciente.DNI,
+		paciente.Address,
+		paciente.CreationDate,
 	)
 
 	if err != nil {
-		return domain.Odontologo{}, err
+		return domain.Paciente{}, err
 	}
 
 	_, err = result.RowsAffected()
 	if err != nil {
-		return domain.Odontologo{}, err
+		return domain.Paciente{}, err
 	}
 
-	return odontologo, nil
+	return paciente, nil
 }

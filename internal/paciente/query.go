@@ -1,15 +1,15 @@
-package odontologo
+package paciente
 
 var (
-	QueryInsertOdontologo = `INSERT INTO clinicaodontologica.odontologo(name,last_name,medical_ID)
+	QueryInsertPaciente = `INSERT INTO clinicaodontologica.paciente(id,name,last_name,DNI,address,creation_date)
 	VALUES(?,?,?)`
-	QueryGetAllOdontologos = `SELECT id,name,last_name,medical_ID 
-	FROM clinicaodontologica.odontologo`
-	QueryDeleteOdontologo  = `DELETE FROM clinicaodontologica.odontologo WHERE id = ?`
-	QueryGetOdontologoById = `SELECT id,name,last_name,medical_ID
-	FROM clinicaodontologica.odontologo WHERE id = ?`
-	QueryUpdateOdontologo = `UPDATE clinicaodontologica.odontologo SET name = ?, last_name = ?, medical_ID = ?
+	QueryGetAllPacientes = `SELECT id,name,last_name,DNI,address,creation_date
+	FROM clinicaodontologica.paciente`
+	QueryDeletePaciente    = `DELETE FROM clinicaodontologica.paciente WHERE id = ?`
+	QueryGetOdontologoById = `SELECT id,name,last_name,DNI,address,creation_date
+	FROM clinicaodontologica.paciente WHERE id = ?`
+	QueryUpdatePaciente = `UPDATE clinicaodontologica.paciente SET name = ?, last_name = ?, DNI= ?, address = ?, creation_date= ?
 	WHERE id = ?`
-	QueryPatchOdontologo = `UPDATE clinicaodontologica.odontologo SET name = COALESCE(?, name), last_name = COALESCE(?, last_name), medical_ID = COALESCE(?, medical_ID)
+	QueryPatchPaciente = `UPDATE clinicaodontologica.paciente SET name = COALESCE(?, name), last_name = COALESCE(?, last_name), DNI = COALESCE(?, DNI), address = COALESCE(?, address), creation_date = COALESCE(?, creation_date)
 	WHERE id = ?`
 )

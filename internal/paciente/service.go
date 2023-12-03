@@ -1,4 +1,4 @@
-package odontologo
+package paciente
 
 import (
 	"context"
@@ -8,12 +8,12 @@ import (
 )
 
 type Service interface {
-	Create(ctx context.Context, odontologo domain.Odontologo) (domain.Odontologo, error)
-	GetAll(ctx context.Context) ([]domain.Odontologo, error)
-	GetByID(ctx context.Context, id int) (domain.Odontologo, error)
-	Update(ctx context.Context, producto domain.Odontologo, id int) (domain.Odontologo, error)
+	Create(ctx context.Context, paciente domain.Paciente) (domain.Paciente, error)
+	GetAll(ctx context.Context) ([]domain.Paciente, error)
+	GetByID(ctx context.Context, id int) (domain.Paciente, error)
+	Update(ctx context.Context, producto domain.Paciente, id int) (domain.Paciente, error)
 	Delete(ctx context.Context, id int) error
-	Patch(ctx context.Context, producto domain.Odontologo, id int) (domain.Odontologo, error)
+	Patch(ctx context.Context, producto domain.Paciente, id int) (domain.Paciente, error)
 }
 
 type service struct {
@@ -24,99 +24,106 @@ func NewServiceOdontologo(repository Repository) Service {
 	return &service{repository: repository}
 }
 
-// Create is a method that creates a new product.
-func (s *service) Create(ctx context.Context, odontologo domain.Odontologo) (domain.Odontologo, error) {
-	odontologo, err := s.repository.Create(ctx, odontologo)
+// Create is a method that creates a new paciente.
+func (s *service) Create(ctx context.Context, paciente domain.Paciente) (domain.Paciente, error) {
+	paciente, err := s.repository.Create(ctx, paciente)
 	if err != nil {
-		log.Println("[OdontologosService][Create] error creating product", err)
-		return domain.Odontologo{}, err
+		log.Println("[PacientesService][Create] error creating paciente", err)
+		return domain.Paciente{}, err
 	}
 
-	return odontologo, nil
+	return paciente, nil
 }
 
 // GetAll is a method that returns all products.
-func (s *service) GetAll(ctx context.Context) ([]domain.Odontologo, error) {
+func (s *service) GetAll(ctx context.Context) ([]domain.Paciente, error) {
 	listProducts, err := s.repository.GetAll(ctx)
 	if err != nil {
-		log.Println("[OdontologosService][GetAll] error getting all odontologos", err)
-		return []domain.Odontologo{}, err
+		log.Println("[PacientesService][GetAll] error getting all odontologos", err)
+		return []domain.Paciente{}, err
 	}
 
 	return listProducts, nil
 }
 
-// GetByID is a method that returns a product by ID.
-func (s *service) GetByID(ctx context.Context, id int) (domain.Odontologo, error) {
-	odontologo, err := s.repository.GetByID(ctx, id)
+// GetByID is a method that returns a paciente by ID.
+func (s *service) GetByID(ctx context.Context, id int) (domain.Paciente, error) {
+	paciente, err := s.repository.GetByID(ctx, id)
 	if err != nil {
-		log.Println("[OdontologosService][GetByID] error getting odontologo by ID", err)
-		return domain.Odontologo{}, err
+		log.Println("[PacientesService][GetByID] error getting paciente by ID", err)
+		return domain.Paciente{}, err
 	}
 
-	return odontologo, nil
+	return paciente, nil
 }
 
-// Update is a method that updates a product by ID.
-func (s *service) Update(ctx context.Context, odontologo domain.Odontologo, id int) (domain.Odontologo, error) {
-	odontologo, err := s.repository.Update(ctx, odontologo, id)
+// Update is a method that updates a paciente by ID.
+func (s *service) Update(ctx context.Context, paciente domain.Paciente, id int) (domain.Paciente, error) {
+	paciente, err := s.repository.Update(ctx, paciente, id)
 	if err != nil {
-		log.Println("[OdontologosService][Update] error updating odontologo by ID", err)
-		return domain.Odontologo{}, err
+		log.Println("[PacientesService][Update] error updating paciente by ID", err)
+		return domain.Paciente{}, err
 	}
 
-	return odontologo, nil
+	return paciente, nil
 }
 
-// Delete is a method that deletes a product by ID.
+// Delete is a method that deletes a paciente by ID.
 func (s *service) Delete(ctx context.Context, id int) error {
 	err := s.repository.Delete(ctx, id)
 	if err != nil {
-		log.Println("[OdontologosService][Delete] error deleting product by ID", err)
+		log.Println("[PacientesService][Delete] error deleting paciente by ID", err)
 		return err
 	}
 
 	return nil
 }
 
-// Patch is a method that updates a product by ID.
-func (s *service) Patch(ctx context.Context, odontologo domain.Odontologo, id int) (domain.Odontologo, error) {
-	odontologoStore, err := s.repository.GetByID(ctx, id)
+// Patch is a method that updates a paciente by ID.
+func (s *service) Patch(ctx context.Context, paciente domain.Paciente, id int) (domain.Paciente, error) {
+	pacienteStore, err := s.repository.GetByID(ctx, id)
 	if err != nil {
-		log.Println("[OdontologosService][Patch] error getting odontologo by ID", err)
-		return domain.Odontologo{}, err
+		log.Println("[PacientesService][Patch] error getting paciente by ID", err)
+		return domain.Paciente{}, err
 	}
 
-	odontologoPatch, err := s.validatePatch(odontologoStore, odontologo)
+	pacientePatch, err := s.validatePatch(pacienteStore, paciente)
 	if err != nil {
-		log.Println("[ProductsService][Patch] error validating product", err)
-		return domain.Odontologo{}, err
+		log.Println("[ProductsService][Patch] error validating paciente", err)
+		return domain.Paciente{}, err
 	}
 
-	odontologo, err = s.repository.Patch(ctx, odontologoPatch, id)
+	paciente, err = s.repository.Patch(ctx, pacientePatch, id)
 	if err != nil {
-		log.Println("[ProductsService][Patch] error patching product by ID", err)
-		return domain.Odontologo{}, err
+		log.Println("[ProductsService][Patch] error patching paciente by ID", err)
+		return domain.Paciente{}, err
 	}
 
-	return odontologo, nil
+	return paciente, nil
 }
 
 // validatePatch is a method that validates the fields to be updated.
-func (s *service) validatePatch(odontologoStore, odontologo domain.Odontologo) (domain.Odontologo, error) {
+func (s *service) validatePatch(pacienteStore, paciente domain.Paciente) (domain.Paciente, error) {
 
-	if odontologo.Name != "" {
-		odontologoStore.Name = odontologo.Name
+	if paciente.Name != "" {
+		pacienteStore.Name = paciente.Name
 	}
 
-	if odontologo.LastName != "" {
-		odontologoStore.LastName = odontologo.LastName
+	if paciente.LastName != "" {
+		pacienteStore.LastName = paciente.LastName
 	}
 
-	if odontologo.MedicalId != "" {
-		odontologoStore.MedicalId = odontologo.MedicalId
+	if paciente.DNI != "" {
+		pacienteStore.DNI = paciente.DNI
 	}
 
-	return odontologoStore, nil
+	if paciente.Address != "" {
+		pacienteStore.Address = paciente.Address
+	}
+
+	if paciente.CreationDate != "" {
+		pacienteStore.CreationDate = paciente.CreationDate
+	}
+	return pacienteStore, nil
 
 }
