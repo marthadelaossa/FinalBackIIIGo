@@ -20,16 +20,16 @@ func NewControladorProducto(service odontologo.Service) *Controlador {
 	}
 }
 
-// Producto godoc
-// @Summary producto example
-// @Description Create a new producto
-// @Tags producto
+// Odontologo godoc
+// @Summary odontologo example
+// @Description Create a new odontologo
+// @Tags odontologo
 // @Accept json
 // @Produce json
 // @Success 200 {object} web.response
 // @Failure 400 {object} web.errorResponse
 // @Failure 500 {object} web.errorResponse
-// @Router /productos [post]
+// @Router /odontologo [post]
 func (c *Controlador) HandlerCreate() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 
@@ -53,10 +53,10 @@ func (c *Controlador) HandlerCreate() gin.HandlerFunc {
 	}
 }
 
-// Producto godoc
-// @Summary producto example
-// @Description Get all productos
-// @Tags producto
+// Odontologo godoc
+// @Summary odontologo example
+// @Description Get all odontologos
+// @Tags odontologo
 // @Accept json
 // @Produce json
 // @Success 200 {object} web.response
@@ -75,11 +75,11 @@ func (c *Controlador) HandlerGetAll() gin.HandlerFunc {
 	}
 }
 
-// Producto godoc
-// @Summary producto example
-// @Description Get producto by id
-// @Tags producto
-// @Param id path int true "id del producto"
+// Odontologo godoc
+// @Summary odontologo example
+// @Description Get odontologo by id
+// @Tags odontologo
+// @Param id path int true "id del odontologo"
 // @Accept json
 // @Produce json
 // @Success 200 {object} web.response
@@ -104,10 +104,10 @@ func (c *Controlador) HandlerGetByID() gin.HandlerFunc {
 	}
 }
 
-// Producto godoc
-// @Summary producto example
-// @Description Update producto by id
-// @Tags producto
+// Odontologo godoc
+// @Summary odontologo example
+// @Description Update odontologo by id
+// @Tags odontologo
 // @Accept json
 // @Produce json
 // @Success 200 {object} web.response
@@ -146,11 +146,11 @@ func (c *Controlador) HandlerUpdate() gin.HandlerFunc {
 	}
 }
 
-// Producto godoc
-// @Summary producto example
-// @Description Delete producto by id
-// @Tags producto
-// @Param id path int true "id del producto"
+// Odontologo godoc
+// @Summary odontologo example
+// @Description Delete odontologo by id
+// @Tags odontologo
+// @Param id path int true "id del odontologo"
 // @Accept json
 // @Produce json
 // @Success 200 {object} web.response
@@ -175,11 +175,11 @@ func (c *Controlador) HandlerDelete() gin.HandlerFunc {
 	}
 }
 
-// Producto godoc
-// @Summary producto example
-// @Description Patch producto
-// @Tags producto
-// @Param id path int true "id del producto"
+// Odontologo godoc
+// @Summary odontologo example
+// @Description Patch odontologo
+// @Tags odontologo
+// @Param id path int true "id del odontologo"
 // @Accept json
 // @Produce json
 // @Success 200 {object} web.response
