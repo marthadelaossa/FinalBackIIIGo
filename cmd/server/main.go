@@ -17,6 +17,10 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
+const (
+	puerto = "8081"
+)
+
 // @title           Swagger Example API
 // @version         1.0
 // @description     This is a sample server celler server.
@@ -46,20 +50,14 @@ func main() {
 		}
 	}()
 
-	// Load the environment variables.\
-	goEnv := os.Getenv("GO_ENV")
-	if goEnv != "PRODUCTION" {
-		err := godotenv.Load()
-		if err != nil {
-			log.Fatal(err)
-		}
+	// Load the environment variables.
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal(err)
 	}
 
 	// Connect to the database.
-	db, err := connectDB()
-	if err != nil {
-		panic(err)
-	}
+	db := connectDB()
 
 	// Create a new Gin engine.
 	router := gin.New()
@@ -79,44 +77,41 @@ func main() {
 }
 
 func runApp(db *sql.DB, engine *gin.Engine) {
+	// Run the application.
 	router := routes.NewRouter(engine, db)
-
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = "8080"
-	}
-
+	// Map all routes.
 	router.MapRoutes()
-	if err := engine.Run(fmt.Sprintf(":%s", port)); err != nil {
+	if err := engine.Run(fmt.Sprintf(":%s", puerto)); err != nil {
 		panic(err)
 	}
 
 }
 
 // connectDB connects to the database.
-func connectDB() (*sql.DB, error) {
-	// Get values from environment variables
-	dbUsername := os.Getenv("DB_USER")
-	dbPassword := os.Getenv("DB_PASSWORD")
-	dbHost := os.Getenv("DB_HOST")
-	dbPort := os.Getenv("DB_PORT")
-	dbName := os.Getenv("DB_NAME")
+func connectDB() *sql.DB {
+	var dbUsername, dbPassword, dbHost, dbPort, dbName string
+	dbUsername = "root"
+	dbPassword = ""
+	dbHost = "localhost"
+	dbPort = "3306"
+	dbName = "clinicaodontologica"
 
-	if dbUsername == "" || dbPassword == "" || dbHost == "" || dbPort == "" || dbName == "" {
-		return nil, fmt.Errorf("all environment variables must be defined for the database connection")
-	}
-
+	// Create the data source.
 	dataSource := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?parseTime=true", dbUsername, dbPassword, dbHost, dbPort, dbName)
 
+	// Open the connection.
 	db, err := sql.Open("mysql", dataSource)
+
 	if err != nil {
-		return nil, fmt.Errorf("error opening the database connection: %v", err)
+		panic(err)
 	}
 
+	// Check the connection.
 	err = db.Ping()
+
 	if err != nil {
-		return nil, fmt.Errorf("error verifying the database connection: %v", err)
+		panic(err)
 	}
 
-	return db, nil
+	return db
 }

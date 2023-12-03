@@ -10,38 +10,46 @@ import (
 	"github.com/marthadelaossa/FinalBackIIIGo/pkg/web"
 )
 
-const (
-	badRequestErrorMessage     = "Bad request"
-	invalidIdErrorMessage      = "Invalid ID"
-	internalServerErrorMessage = "Internal server error"
-)
-
-type Controller struct {
+type Controlador struct {
 	service odontologo.Service
 }
 
-func NewController(service odontologo.Service) *Controller {
-	return &Controller{
+func NewControladorProducto(service odontologo.Service) *Controlador {
+	return &Controlador{
 		service: service,
 	}
 }
 
-func (c *Controller) HandlerCreate() gin.HandlerFunc {
+// Odontologo godoc
+// @Summary odontologo example
+// @Description Create a new odontologo
+// @Tags odontologo
+// @Accept json
+// @Produce json
+// @Success 200 {object} web.response
+// @Failure 400 {object} web.errorResponse
+// @Failure 500 {object} web.errorResponse
+// @Router /odontologo [post]
+func (c *Controlador) HandlerCreate() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
+
 		var request domain.Odontologo
 
-		if err := ctx.Bind(&request); err != nil {
-			web.Error(ctx, http.StatusBadRequest, badRequestErrorMessage)
+		err := ctx.Bind(&request)
+
+		if err != nil {
+			web.Error(ctx, http.StatusBadRequest, "%s", "bad request")
 			return
 		}
 
 		odontologo, err := c.service.Create(ctx, request)
 		if err != nil {
-			web.Error(ctx, http.StatusInternalServerError, internalServerErrorMessage)
+			web.Error(ctx, http.StatusInternalServerError, "%s", "internal server error")
 			return
 		}
 
 		web.Success(ctx, http.StatusOK, odontologo)
+
 	}
 }
 
@@ -53,16 +61,17 @@ func (c *Controller) HandlerCreate() gin.HandlerFunc {
 // @Produce json
 // @Success 200 {object} web.response
 // @Failure 500 {object} web.errorResponse
-// @Router /odontologos [get]
+// @Router /productos [get]
 func (c *Controlador) HandlerGetAll() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		odontologos, err := c.service.GetAll(ctx)
+		odontologo, err := c.service.GetAll(ctx)
+
 		if err != nil {
-			web.Error(ctx, http.StatusInternalServerError, internalServerErrorMessage)
+			web.Error(ctx, http.StatusInternalServerError, "%s", "internal server error")
 			return
 		}
 
-		web.Success(ctx, http.StatusOK, odontologos)
+		web.Success(ctx, http.StatusOK, odontologo)
 	}
 }
 
@@ -76,18 +85,18 @@ func (c *Controlador) HandlerGetAll() gin.HandlerFunc {
 // @Success 200 {object} web.response
 // @Failure 400 {object} web.errorResponse
 // @Failure 500 {object} web.errorResponse
-// @Router /odontologos/:id [get]
+// @Router /productos/:id [get]
 func (c *Controlador) HandlerGetByID() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		id, err := strconv.Atoi(ctx.Param("id"))
 		if err != nil {
-			web.Error(ctx, http.StatusBadRequest, invalidIdErrorMessage)
+			web.Error(ctx, http.StatusBadRequest, "%s", "id invalido")
 			return
 		}
 
 		odontologo, err := c.service.GetByID(ctx, id)
 		if err != nil {
-			web.Error(ctx, http.StatusInternalServerError, internalServerErrorMessage)
+			web.Error(ctx, http.StatusInternalServerError, "%s", "internal server error")
 			return
 		}
 
@@ -104,29 +113,36 @@ func (c *Controlador) HandlerGetByID() gin.HandlerFunc {
 // @Success 200 {object} web.response
 // @Failure 400 {object} web.errorResponse
 // @Failure 500 {object} web.errorResponse
-// @Router /odontologos/:id [put]
+// @Router /productos/:id [put]
 func (c *Controlador) HandlerUpdate() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
+
 		var request domain.Odontologo
 
-		if err := ctx.Bind(&request); err != nil {
-			web.Error(ctx, http.StatusBadRequest, badRequestErrorMessage)
+		errBind := ctx.Bind(&request)
+
+		if errBind != nil {
+			web.Error(ctx, http.StatusBadRequest, "%s", "bad request binding")
 			return
 		}
 
-		id, err := strconv.Atoi(ctx.Param("id"))
+		id := ctx.Param("id")
+
+		idInt, err := strconv.Atoi(id)
+
 		if err != nil {
-			web.Error(ctx, http.StatusBadRequest, badRequestErrorMessage)
+			web.Error(ctx, http.StatusBadRequest, "%s", "bad request param")
 			return
 		}
 
-		odontologo, err := c.service.Update(ctx, request, id)
+		odontologo, err := c.service.Update(ctx, request, idInt)
 		if err != nil {
-			web.Error(ctx, http.StatusInternalServerError, internalServerErrorMessage)
+			web.Error(ctx, http.StatusInternalServerError, "%s", "internal server error")
 			return
 		}
 
 		web.Success(ctx, http.StatusOK, odontologo)
+
 	}
 }
 
@@ -140,22 +156,22 @@ func (c *Controlador) HandlerUpdate() gin.HandlerFunc {
 // @Success 200 {object} web.response
 // @Failure 400 {object} web.errorResponse
 // @Failure 500 {object} web.errorResponse
-// @Router /odontologos/:id [delete]
+// @Router /productos/:id [delete]
 func (c *Controlador) HandlerDelete() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		id, err := strconv.Atoi(ctx.Param("id"))
 		if err != nil {
-			web.Error(ctx, http.StatusBadRequest, invalidIdErrorMessage)
+			web.Error(ctx, http.StatusBadRequest, "%s", "id invalido")
 			return
 		}
 
 		err = c.service.Delete(ctx, id)
 		if err != nil {
-			web.Error(ctx, http.StatusInternalServerError, internalServerErrorMessage)
+			web.Error(ctx, http.StatusInternalServerError, "%s", "internal server error")
 			return
 		}
 
-		web.Success(ctx, http.StatusOK, "Odontólogo eliminado")
+		web.Success(ctx, http.StatusOK, "odontologo eliminado")
 	}
 }
 
@@ -169,25 +185,27 @@ func (c *Controlador) HandlerDelete() gin.HandlerFunc {
 // @Success 200 {object} web.response
 // @Failure 400 {object} web.errorResponse
 // @Failure 500 {object} web.errorResponse
-// @Router /odontologos/:id [patch]
+// @Router /productos/:id [patch]
 func (c *Controlador) HandlerPatch() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		id, err := strconv.Atoi(ctx.Param("id"))
 		if err != nil {
-			web.Error(ctx, http.StatusBadRequest, invalidIdErrorMessage)
+			web.Error(ctx, http.StatusBadRequest, "%s", "id invalido")
 			return
 		}
 
 		var request domain.Odontologo
 
-		if err := ctx.Bind(&request); err != nil {
-			web.Error(ctx, http.StatusBadRequest, badRequestErrorMessage)
+		errBind := ctx.Bind(&request)
+
+		if errBind != nil {
+			web.Error(ctx, http.StatusBadRequest, "%s", "bad request binding")
 			return
 		}
 
 		odontologo, err := c.service.Patch(ctx, request, id)
 		if err != nil {
-			web.Error(ctx, http.StatusInternalServerError, internalServerErrorMessage)
+			web.Error(ctx, http.StatusInternalServerError, "%s", "internal server error")
 			return
 		}
 
