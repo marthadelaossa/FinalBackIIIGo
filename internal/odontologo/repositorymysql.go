@@ -3,144 +3,78 @@ package odontologo
 import (
 	"context"
 	"database/sql"
-	"errors"
 
 	"github.com/marthadelaossa/FinalBackIIIGo/internal/domain"
 )
 
-var (
-	ErrPrepareStatement = errors.New("error prepare statement")
-	ErrExecStatement    = errors.New("error exec statement")
-	ErrLastInsertedId   = errors.New("error last inserted id")
-)
-
-type repositorymysql struct {
+type repositoryMySql struct {
 	db *sql.DB
 }
 
-// NewMemoryRepository ....
 func NewMySqlRepository(db *sql.DB) Repository {
-	return &repositorymysql{db: db}
+	return &repositoryMySql{db: db}
 }
 
-// Create is a method that creates a new product.
-func (r *repositorymysql) Create(ctx context.Context, odontologo domain.Odontologo) (domain.Odontologo, error) {
-	statement, err := r.db.Prepare(QueryInsertOdontologo)
+// Create inserta un nuevo odontólogo.
+func (r *repositoryMySql) Create(ctx context.Context, odontologo domain.Odontologo) (domain.Odontologo, error) {
+	result, err := r.db.Exec(QueryInsertOdontologo, odontologo.Name, odontologo.LastName, odontologo.MedicalId)
 	if err != nil {
-		return domain.Odontologo{}, ErrPrepareStatement
+		return domain.Odontologo{}, err
 	}
 
-	defer statement.Close()
-
-	result, err := statement.Exec(
-		odontologo.Name,
-		odontologo.LastName,
-		odontologo.MedicalId,
-	)
-
+	lastID, err := result.LastInsertId()
 	if err != nil {
-		return domain.Odontologo{}, ErrExecStatement
+		return domain.Odontologo{}, err
 	}
 
-	lastId, err := result.LastInsertId()
-	if err != nil {
-		return domain.Odontologo{}, ErrLastInsertedId
-	}
-
-	odontologo.Id = int(lastId)
-
+	odontologo.Id = int(lastID)
 	return odontologo, nil
-
 }
 
-// GetAll is a method that returns all products.
-func (r *repositorymysql) GetAll(ctx context.Context) ([]domain.Odontologo, error) {
+func (r *repositoryMySql) GetAll(ctx context.Context) ([]domain.Odontologo, error) {
 	rows, err := r.db.Query(QueryGetAllOdontologos)
 	if err != nil {
-		return []domain.Odontologo{}, err
+		return nil, err
 	}
-
 	defer rows.Close()
 
 	var odontologos []domain.Odontologo
-
 	for rows.Next() {
 		var odontologo domain.Odontologo
-		err := rows.Scan(
-			&odontologo.Id,
-			&odontologo.Name,
-			&odontologo.LastName,
-			&odontologo.MedicalId,
-		)
+		err := rows.Scan(&odontologo.Id, &odontologo.Name, &odontologo.LastName, &odontologo.MedicalId)
 		if err != nil {
-			return []domain.Odontologo{}, err
+			return nil, err
 		}
-
 		odontologos = append(odontologos, odontologo)
 	}
 
 	if err := rows.Err(); err != nil {
-		return []domain.Odontologo{}, err
+		return nil, err
 	}
 
 	return odontologos, nil
 }
 
-// GetByID is a method that returns a product by ID.
-func (r *repositorymysql) GetByID(ctx context.Context, id int) (domain.Odontologo, error) {
-	row := r.db.QueryRow(QueryGetOdontologoById, id)
-
+func (r *repositoryMySql) GetByID(ctx context.Context, id int) (domain.Odontologo, error) {
 	var odontologo domain.Odontologo
-	err := row.Scan(
-		&odontologo.Id,
-		&odontologo.Name,
-		&odontologo.LastName,
-		&odontologo.MedicalId,
-	)
-
+	err := r.db.QueryRow(QueryGetOdontologoById, id).Scan(&odontologo.Id, &odontologo.Name, &odontologo.LastName, &odontologo.MedicalId)
 	if err != nil {
 		return domain.Odontologo{}, err
 	}
-
 	return odontologo, nil
 }
 
-// Update is a method that updates a product by ID.
-func (r *repositorymysql) Update(
-	ctx context.Context,
-	odontologo domain.Odontologo,
-	id int) (domain.Odontologo, error) {
-	statement, err := r.db.Prepare(QueryUpdateOdontologo)
-	if err != nil {
-		return domain.Odontologo{}, err
-	}
-
-	defer statement.Close()
-
-	result, err := statement.Exec(
-		odontologo.Name,
-		odontologo.LastName,
-		odontologo.MedicalId,
-		id,
-	)
-
-	if err != nil {
-		return domain.Odontologo{}, err
-	}
-
-	_, err = result.RowsAffected()
+func (r *repositoryMySql) Update(ctx context.Context, odontologo domain.Odontologo, id int) (domain.Odontologo, error) {
+	_, err := r.db.Exec(QueryUpdateOdontologo, odontologo.Name, odontologo.LastName, odontologo.MedicalId, id)
 	if err != nil {
 		return domain.Odontologo{}, err
 	}
 
 	odontologo.Id = id
-
 	return odontologo, nil
-
 }
 
-// Delete is a method that deletes a product by ID.
-func (r *repositorymysql) Delete(ctx context.Context, id int) error {
+func (r *repositoryMySql) Delete(ctx context.Context, id int) error {
 	result, err := r.db.Exec(QueryDeleteOdontologo, id)
 	if err != nil {
 		return err
@@ -158,30 +92,8 @@ func (r *repositorymysql) Delete(ctx context.Context, id int) error {
 	return nil
 }
 
-// Patch is a method that updates a product by ID.
-func (r *repositorymysql) Patch(
-	ctx context.Context,
-	odontologo domain.Odontologo,
-	id int) (domain.Odontologo, error) {
-	statement, err := r.db.Prepare(QueryUpdateOdontologo)
-	if err != nil {
-		return domain.Odontologo{}, err
-	}
-
-	defer statement.Close()
-
-	result, err := statement.Exec(
-		odontologo.Name,
-		odontologo.LastName,
-		odontologo.MedicalId,
-		id,
-	)
-
-	if err != nil {
-		return domain.Odontologo{}, err
-	}
-
-	_, err = result.RowsAffected()
+func (r *repositoryMySql) Patch(ctx context.Context, odontologo domain.Odontologo, id int) (domain.Odontologo, error) {
+	_, err := r.db.Exec(QueryPatchOdontologo, odontologo.Name, odontologo.LastName, odontologo.MedicalId, id)
 	if err != nil {
 		return domain.Odontologo{}, err
 	}
