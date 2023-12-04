@@ -1,6 +1,6 @@
 package domain
 
-type Turno struct {
+type Appointment struct {
 	Id           int    `json:"id"`
 	Description  string `json:"description"`
 	OdontologoId int    `json:"id_odontologo"`

@@ -18,36 +18,9 @@
     "host": "localhost:8080",
     "basePath": "/api/v1",
     "paths": {
-        "/productos": {
-            "get": {
-                "description": "Get all productos",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "producto"
-                ],
-                "summary": "producto example",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/web.response"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/web.errorResponse"
-                        }
-                    }
-                }
-            },
+        "/odontologo": {
             "post": {
-                "description": "Create a new producto",
+                "description": "Create a new odontologo",
                 "consumes": [
                     "application/json"
                 ],
@@ -55,9 +28,9 @@
                     "application/json"
                 ],
                 "tags": [
-                    "producto"
+                    "odontologo"
                 ],
-                "summary": "producto example",
+                "summary": "odontologo example",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -80,9 +53,9 @@
                 }
             }
         },
-        "/productos/:id": {
+        "/odontologos": {
             "get": {
-                "description": "Get producto by id",
+                "description": "Get all odontologos",
                 "consumes": [
                     "application/json"
                 ],
@@ -90,13 +63,42 @@
                     "application/json"
                 ],
                 "tags": [
-                    "producto"
+                    "odontologo"
                 ],
-                "summary": "producto example",
+                "summary": "odontologo example",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/web.response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/web.errorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/odontologos/:id": {
+            "get": {
+                "description": "Get odontologo by id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "odontologo"
+                ],
+                "summary": "odontologo example",
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "id del producto",
+                        "description": "id del odontologo",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -124,7 +126,7 @@
                 }
             },
             "put": {
-                "description": "Update producto by id",
+                "description": "Update odontologo by id",
                 "consumes": [
                     "application/json"
                 ],
@@ -132,9 +134,9 @@
                     "application/json"
                 ],
                 "tags": [
-                    "producto"
+                    "odontologo"
                 ],
-                "summary": "producto example",
+                "summary": "odontologo example",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -157,7 +159,7 @@
                 }
             },
             "delete": {
-                "description": "Delete producto by id",
+                "description": "Delete odontologo by id",
                 "consumes": [
                     "application/json"
                 ],
@@ -165,13 +167,13 @@
                     "application/json"
                 ],
                 "tags": [
-                    "producto"
+                    "odontologo"
                 ],
-                "summary": "producto example",
+                "summary": "odontologo example",
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "id del producto",
+                        "description": "id del odontologo",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -199,7 +201,7 @@
                 }
             },
             "patch": {
-                "description": "Patch producto",
+                "description": "Patch odontologo",
                 "consumes": [
                     "application/json"
                 ],
@@ -207,18 +209,278 @@
                     "application/json"
                 ],
                 "tags": [
-                    "producto"
+                    "odontologo"
                 ],
-                "summary": "producto example",
+                "summary": "odontologo example",
                 "parameters": [
                     {
                         "type": "integer",
-                        "description": "id del producto",
+                        "description": "id del odontologo",
                         "name": "id",
                         "in": "path",
                         "required": true
                     }
                 ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/web.response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/web.errorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/web.errorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/paciente": {
+            "post": {
+                "description": "Create a new paciente",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "paciente"
+                ],
+                "summary": "paciente example",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/web.response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/web.errorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/web.errorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/pacientes": {
+            "get": {
+                "description": "Get all pacientes",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "paciente"
+                ],
+                "summary": "paciente example",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/web.response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/web.errorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/pacientes/:id": {
+            "get": {
+                "description": "Get paciente by id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "paciente"
+                ],
+                "summary": "paciente example",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "id del paciente",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/web.response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/web.errorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/web.errorResponse"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "Update paciente by id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "paciente"
+                ],
+                "summary": "paciente example",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/web.response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/web.errorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/web.errorResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Delete paciente by id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "paciente"
+                ],
+                "summary": "paciente example",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "id del paciente",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/web.response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/web.errorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/web.errorResponse"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "description": "Patch paciente",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "paciente"
+                ],
+                "summary": "paciente example",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "id del paciente",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/web.response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/web.errorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/web.errorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/sale": {
+            "post": {
+                "description": "Create a new sale",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "sale"
+                ],
+                "summary": "sale example",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -265,5 +527,9 @@
         "BasicAuth": {
             "type": "basic"
         }
+    },
+    "externalDocs": {
+        "description": "OpenAPI",
+        "url": "https://swagger.io/resources/open-api/"
     }
 }

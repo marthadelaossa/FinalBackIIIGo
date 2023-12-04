@@ -1,6 +1,17 @@
 # Taller de código: Desafío final
 
-## Integrantes
+
+> [!IMPORTANT]
+> For running project u must have installed docker and docker compose
+
+```bash
+docker-compose up
+```
+
+> [!TIP]
+> Wait for testing, check when the console shows de message "Listening and serving HTTP on :8081" 
+
+### Integrantes
 
 [Ismael Carvajal](https://github.com/ismaelc511)
 

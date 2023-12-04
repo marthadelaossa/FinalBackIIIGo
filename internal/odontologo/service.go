@@ -11,9 +11,9 @@ type Service interface {
 	Create(ctx context.Context, odontologo domain.Odontologo) (domain.Odontologo, error)
 	GetAll(ctx context.Context) ([]domain.Odontologo, error)
 	GetByID(ctx context.Context, id int) (domain.Odontologo, error)
-	Update(ctx context.Context, producto domain.Odontologo, id int) (domain.Odontologo, error)
+	Update(ctx context.Context, odontologo domain.Odontologo, id int) (domain.Odontologo, error)
 	Delete(ctx context.Context, id int) error
-	Patch(ctx context.Context, producto domain.Odontologo, id int) (domain.Odontologo, error)
+	Patch(ctx context.Context, odontologo domain.Odontologo, id int) (domain.Odontologo, error)
 }
 
 type service struct {
@@ -24,18 +24,18 @@ func NewServiceOdontologo(repository Repository) Service {
 	return &service{repository: repository}
 }
 
-// Create is a method that creates a new product.
+// Create is a method that creates a new odontologo.
 func (s *service) Create(ctx context.Context, odontologo domain.Odontologo) (domain.Odontologo, error) {
 	odontologo, err := s.repository.Create(ctx, odontologo)
 	if err != nil {
-		log.Println("[OdontologosService][Create] error creating product", err)
+		log.Println("[OdontologosService][Create] error creating dentist", err)
 		return domain.Odontologo{}, err
 	}
 
 	return odontologo, nil
 }
 
-// GetAll is a method that returns all products.
+// GetAll is a method that returns all odontologos.
 func (s *service) GetAll(ctx context.Context) ([]domain.Odontologo, error) {
 	listProducts, err := s.repository.GetAll(ctx)
 	if err != nil {
@@ -46,7 +46,7 @@ func (s *service) GetAll(ctx context.Context) ([]domain.Odontologo, error) {
 	return listProducts, nil
 }
 
-// GetByID is a method that returns a product by ID.
+// GetByID is a method that returns an odontologo by ID.
 func (s *service) GetByID(ctx context.Context, id int) (domain.Odontologo, error) {
 	odontologo, err := s.repository.GetByID(ctx, id)
 	if err != nil {
@@ -57,7 +57,7 @@ func (s *service) GetByID(ctx context.Context, id int) (domain.Odontologo, error
 	return odontologo, nil
 }
 
-// Update is a method that updates a product by ID.
+// Update is a method that updates an odontologo by ID.
 func (s *service) Update(ctx context.Context, odontologo domain.Odontologo, id int) (domain.Odontologo, error) {
 	odontologo, err := s.repository.Update(ctx, odontologo, id)
 	if err != nil {
@@ -68,7 +68,7 @@ func (s *service) Update(ctx context.Context, odontologo domain.Odontologo, id i
 	return odontologo, nil
 }
 
-// Delete is a method that deletes a product by ID.
+// Delete is a method that deletes an odontologo by ID.
 func (s *service) Delete(ctx context.Context, id int) error {
 	err := s.repository.Delete(ctx, id)
 	if err != nil {
@@ -79,7 +79,7 @@ func (s *service) Delete(ctx context.Context, id int) error {
 	return nil
 }
 
-// Patch is a method that updates a product by ID.
+// Patch is a method that updates an odontologo by ID.
 func (s *service) Patch(ctx context.Context, odontologo domain.Odontologo, id int) (domain.Odontologo, error) {
 	odontologoStore, err := s.repository.GetByID(ctx, id)
 	if err != nil {
