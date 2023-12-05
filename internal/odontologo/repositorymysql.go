@@ -37,6 +37,7 @@ func (r *OdontologoMySqlRepository) Create(ctx context.Context, odontologo domai
 	}
 
 	lastID, err := result.LastInsertId()
+	
 	if err != nil {
 		return domain.Odontologo{}, ErrLastInsertedId
 	}
