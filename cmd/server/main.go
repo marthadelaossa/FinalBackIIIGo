@@ -102,7 +102,7 @@ func connectDB() (*sql.DB, error) {
 	dbPort := os.Getenv("DB_PORT")
 	dbName := os.Getenv("DB_NAME")
 
-	if dbUsername == "" || dbPassword == "" || dbHost == "" || dbPort == "" || dbName == "" {
+	if dbUsername == "" || dbHost == "" || dbPort == "" || dbName == "" {
 		return nil, fmt.Errorf("all environment variables must be defined for the database connection")
 	}
 
