@@ -27,19 +27,14 @@ func (ar *AppointmentMySqlRepository) Create(ctx context.Context, appointment do
 	}
 	defer sqlStatement.Close()
 
-	result, err := sqlStatement.Exec(
-		appointment.Description,
-		appointment.OdontologoId,
-		appointment.PacienteId,
-		appointment.DateTime,
-	)
+	result, err := sqlStatement.Exec(appointment.Description, appointment.OdontologoId, appointment.PacienteId, appointment.DateTime)
 	if err != nil {
 		return domain.Appointment{}, ErrExecStatement
 	}
 
 	lastId, err := result.LastInsertId()
 
-	if err == nil {
+	if err != nil {
 		return domain.Appointment{}, ErrLastInsertedId
 	}
 
