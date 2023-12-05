@@ -10,6 +10,9 @@ import (
 
 var (
 	notAppointmentFoundForDeletion = errors.New("No one medical appointment were found for deleting.")
+	ErrPrepareStatement            = errors.New("error preparing statement")
+	ErrExecStatement               = errors.New("error executing statement")
+	ErrLastInsertedId              = errors.New("error getting last inserted ID")
 )
 
 type AppointmentMySqlRepository struct {
@@ -20,7 +23,7 @@ type AppointmentMySqlRepository struct {
 func (ar *AppointmentMySqlRepository) Create(ctx context.Context, appointment domain.Appointment) (domain.Appointment, error) {
 	sqlStatement, err := ar.db.Prepare(QueryInsertAppointment)
 	if err != nil {
-		return domain.Appointment{}, err
+		return domain.Appointment{}, ErrPrepareStatement
 	}
 	defer sqlStatement.Close()
 
@@ -31,13 +34,13 @@ func (ar *AppointmentMySqlRepository) Create(ctx context.Context, appointment do
 		appointment.DateTime,
 	)
 	if err != nil {
-		return domain.Appointment{}, err
+		return domain.Appointment{}, ErrExecStatement
 	}
 
 	lastId, err := result.LastInsertId()
 
 	if err == nil {
-		return domain.Appointment{}, err
+		return domain.Appointment{}, ErrLastInsertedId
 	}
 
 	appointment.Id = int(lastId)
@@ -155,6 +158,7 @@ func (ar *AppointmentMySqlRepository) Update(ctx context.Context, appointment do
 
 	result, err := sqlStatement.Exec(
 		appointment.Id,
+		appointment.Description,
 		appointment.OdontologoId,
 		appointment.PacienteId,
 		appointment.DateTime,
