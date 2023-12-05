@@ -1,7 +1,7 @@
 # Taller de código: Desafío final
 
 
-> [!IMPORTANTE]
+> [!IMPORTANT]
 > El proyecto corre solo en Local, se intento Dockerizar pero en el proceso testear la API via postman se generaban algunos errores. Igual se dejaron los cambios para terminar el proceso de manera exitosa en el futuro.
 
 > [!TIP]
