@@ -28,7 +28,7 @@ func NewServiceOdontologo(repository Repository) Service {
 func (s *service) Create(ctx context.Context, odontologo domain.Odontologo) (domain.Odontologo, error) {
 	odontologo, err := s.repository.Create(ctx, odontologo)
 	if err != nil {
-		log.Println("[OdontologosService][Create] error creating product", err)
+		log.Println("[OdontologosService][Create] error creating dentist", err)
 		return domain.Odontologo{}, err
 	}
 

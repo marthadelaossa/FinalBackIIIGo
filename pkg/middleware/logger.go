@@ -8,46 +8,43 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// Esto es extra//
+// bodyLogWriter is a custom response writer with additional body logging capabilities.
 type bodyLogWriter struct {
 	gin.ResponseWriter
 	body *bytes.Buffer
 }
 
-/////////////////
-
-// Esto es extra//
+// Write overrides the Write method to log the response body.
 func (w bodyLogWriter) Write(b []byte) (int, error) {
 	w.body.Write(b)
 	return w.ResponseWriter.Write(b)
 }
 
-/////////////////
-
+// Logger is a middleware that logs information about the incoming requests.
 func Logger() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		// Obtenemos el verbo, la url y el tiempo
-		verbo := ctx.Request.Method
-		time := time.Now()
+		// Capture the request method, URL, and time
+		method := ctx.Request.Method
+		reqTime := time.Now()
 		url := ctx.Request.URL
 		var size int
 
-		//Esto es extra//
+		// Wrap the response writer with our custom body logger
 		blw := &bodyLogWriter{body: bytes.NewBufferString(""), ResponseWriter: ctx.Writer}
 		ctx.Writer = blw
-		/////////////////
+
+		// Process the request and move to the next middleware
 		ctx.Next()
 
+		// Capture the response size
 		if ctx.Writer != nil {
 			size = ctx.Writer.Size()
-
 		}
 
-		fmt.Printf("\nPath:%s\nVerbo:%s\nTiempo:%v\nTamaño consulta:%d\n", url, verbo, time, size)
-		//Esto es extra//
-		fmt.Printf("Body:%s\n", blw.body.String())
-		/////////////////
+		// Print request information
+		fmt.Printf("\nPath:%s\nMethod:%s\nTime:%v\nRequest Size:%d\n", url, method, reqTime, size)
 
+		// Print response body (if available)
+		fmt.Printf("Response Body:%s\n", blw.body.String())
 	}
-
 }

@@ -10,12 +10,17 @@ import (
 	"github.com/marthadelaossa/FinalBackIIIGo/pkg/web"
 )
 
-type Controlador struct {
+const (
+	internalServerErrorConst = "Internal server error"
+	invalidIdErrorConst      = "Invalid ID"
+)
+
+type Controller struct {
 	service odontologo.Service
 }
 
-func NewControladorProducto(service odontologo.Service) *Controlador {
-	return &Controlador{
+func NewController(service odontologo.Service) *Controller {
+	return &Controller{
 		service: service,
 	}
 }
@@ -30,7 +35,7 @@ func NewControladorProducto(service odontologo.Service) *Controlador {
 // @Failure 400 {object} web.errorResponse
 // @Failure 500 {object} web.errorResponse
 // @Router /odontologo [post]
-func (c *Controlador) HandlerCreate() gin.HandlerFunc {
+func (c *Controller) HandlerCreate() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 
 		var request domain.Odontologo
@@ -44,7 +49,7 @@ func (c *Controlador) HandlerCreate() gin.HandlerFunc {
 
 		odontologo, err := c.service.Create(ctx, request)
 		if err != nil {
-			web.Error(ctx, http.StatusInternalServerError, "%s", "internal server error")
+			web.Error(ctx, http.StatusInternalServerError, "%s", internalServerErrorConst)
 			return
 		}
 
@@ -62,12 +67,12 @@ func (c *Controlador) HandlerCreate() gin.HandlerFunc {
 // @Success 200 {object} web.response
 // @Failure 500 {object} web.errorResponse
 // @Router /odontologos [get]
-func (c *Controlador) HandlerGetAll() gin.HandlerFunc {
+func (c *Controller) HandlerGetAll() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		odontologo, err := c.service.GetAll(ctx)
 
 		if err != nil {
-			web.Error(ctx, http.StatusInternalServerError, "%s", "internal server error")
+			web.Error(ctx, http.StatusInternalServerError, "%s", internalServerErrorConst)
 			return
 		}
 
@@ -86,17 +91,17 @@ func (c *Controlador) HandlerGetAll() gin.HandlerFunc {
 // @Failure 400 {object} web.errorResponse
 // @Failure 500 {object} web.errorResponse
 // @Router /odontologos/:id [get]
-func (c *Controlador) HandlerGetByID() gin.HandlerFunc {
+func (c *Controller) HandlerGetByID() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		id, err := strconv.Atoi(ctx.Param("id"))
 		if err != nil {
-			web.Error(ctx, http.StatusBadRequest, "%s", "id invalido")
+			web.Error(ctx, http.StatusBadRequest, "%s", invalidIdErrorConst)
 			return
 		}
 
 		odontologo, err := c.service.GetByID(ctx, id)
 		if err != nil {
-			web.Error(ctx, http.StatusInternalServerError, "%s", "internal server error")
+			web.Error(ctx, http.StatusInternalServerError, "%s", internalServerErrorConst)
 			return
 		}
 
@@ -114,7 +119,7 @@ func (c *Controlador) HandlerGetByID() gin.HandlerFunc {
 // @Failure 400 {object} web.errorResponse
 // @Failure 500 {object} web.errorResponse
 // @Router /odontologos/:id [put]
-func (c *Controlador) HandlerUpdate() gin.HandlerFunc {
+func (c *Controller) HandlerUpdate() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 
 		var request domain.Odontologo
@@ -137,7 +142,7 @@ func (c *Controlador) HandlerUpdate() gin.HandlerFunc {
 
 		odontologo, err := c.service.Update(ctx, request, idInt)
 		if err != nil {
-			web.Error(ctx, http.StatusInternalServerError, "%s", "internal server error")
+			web.Error(ctx, http.StatusInternalServerError, "%s", internalServerErrorConst)
 			return
 		}
 
@@ -157,7 +162,7 @@ func (c *Controlador) HandlerUpdate() gin.HandlerFunc {
 // @Failure 400 {object} web.errorResponse
 // @Failure 500 {object} web.errorResponse
 // @Router /odontologos/:id [delete]
-func (c *Controlador) HandlerDelete() gin.HandlerFunc {
+func (c *Controller) HandlerDelete() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		id, err := strconv.Atoi(ctx.Param("id"))
 		if err != nil {
@@ -186,7 +191,7 @@ func (c *Controlador) HandlerDelete() gin.HandlerFunc {
 // @Failure 400 {object} web.errorResponse
 // @Failure 500 {object} web.errorResponse
 // @Router /odontologos/:id [patch]
-func (c *Controlador) HandlerPatch() gin.HandlerFunc {
+func (c *Controller) HandlerPatch() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		id, err := strconv.Atoi(ctx.Param("id"))
 		if err != nil {

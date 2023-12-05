@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS `paciente` (
    PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-CREATE TABLE  IF NOT EXISTS `turnos` (
+CREATE TABLE  IF NOT EXISTS `appointments` (
   `id` int NOT NULL AUTO_INCREMENT,
   `description` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
   `id_odontologo` int NOT NULL,
